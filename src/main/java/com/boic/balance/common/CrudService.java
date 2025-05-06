@@ -1,6 +1,6 @@
-package com.boic.testTask.common;
+package com.boic.balance.common;
 
-import com.boic.testTask.exception.NotFoundException;
+import com.boic.balance.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

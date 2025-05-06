@@ -1,4 +1,4 @@
-package com.boic.testTask.users;
+package com.boic.balance.user;
 
 import lombok.Data;
 

@@ -1,2 +1,8 @@
-package com.boic.balance.email;public class EmailDtoIn {
+package com.boic.balance.email;
+
+import lombok.Data;
+
+@Data
+public class EmailDto {
+    private String email;
 }

@@ -1,4 +1,4 @@
-package com.boic.testTask.exception;
+package com.boic.balance.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +20,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(RegisterException.class)
-    public ResponseEntity<ErrorResponse> handleRegister(RegisterException ex) {
-        ErrorResponse error = new ErrorResponse("BAD_REQUEST", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-    }
-
-    @ExceptionHandler(AuthorException.class)
-    public ResponseEntity<ErrorResponse> handleAuthor(AuthorException ex) {
+    @ExceptionHandler(OwnerException.class)
+    public ResponseEntity<ErrorResponse> handleOwner(OwnerException ex) {
         ErrorResponse error = new ErrorResponse("ACCESS_DENIED", ex.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    }
+
+    @ExceptionHandler(UniqueException.class)
+    public ResponseEntity<ErrorResponse> handleUnique(UniqueException ex) {
+        ErrorResponse error = new ErrorResponse("CONFLICT", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(AccountException.class)
+    public ResponseEntity<ErrorResponse> handleInsufficientFunds(AccountException ex) {
+        ErrorResponse error = new ErrorResponse("CONFLICT", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 }

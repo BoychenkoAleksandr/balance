@@ -1,18 +1,18 @@
-package com.boic.testTask.users;
+package com.boic.balance.user;
 
-import com.boic.testTask.common.Role;
+
+import com.boic.balance.account.AccountJpa;
+import com.boic.balance.email.EmailJpa;
+import com.boic.balance.phone.PhoneJpa;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-@EntityListeners(AuditingEntityListener.class)
 @Data
 public class UserJpa {
     @Id
@@ -25,25 +25,15 @@ public class UserJpa {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
 
-    @Column(name = "surname", nullable = false)
-    private String surname;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<PhoneJpa> phoneList = new ArrayList<>();
 
-    @Column(name = "parent_name", nullable = false)
-    private String parentName;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<EmailJpa> emailList = new ArrayList<>();
 
-    @Column(name = "role", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    @CreatedDate
-    @Column(name = "creation_date", updatable = false)
-    private LocalDateTime creationDate;
-
-    @LastModifiedDate
-    @Column(name = "last_edit_date")
-    private LocalDateTime lastEditDate;
-
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private AccountJpa accountJpa;
 }

@@ -1,4 +1,4 @@
-package com.boic.testTask.common;
+package com.boic.balance.common;
 
 import org.springframework.data.domain.Page;
 

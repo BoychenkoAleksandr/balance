@@ -1,16 +1,18 @@
-package com.boic.testTask.users;
+package com.boic.balance.user;
 
-import com.boic.testTask.common.CrudService;
-import com.boic.testTask.common.JpaMapper;
+import com.boic.balance.common.CrudService;
+import com.boic.balance.common.JpaMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements CrudService<User, UserJpa> {
 
     private final UserJpaMapper userJpaMapper;
     private final UserRepository userRepository;
@@ -19,13 +21,19 @@ public class UserService {
         return userRepository;
     }
 
+    @Override
+    public JpaSpecificationExecutor<UserJpa> getExecutor() {
+        return userRepository;
+    }
+
     public JpaMapper<User, UserJpa> getMapper() {
         return userJpaMapper;
     }
 
+
     @Transactional
-    public User findByUsernameIgnoreCase(String username) {
-        return userJpaMapper.fromJpaEntity(userRepository.findByUsernameIgnoreCase(username)
+    public User findById(Long userId) {
+        return userJpaMapper.fromJpaEntity(userRepository.findById(userId)
                 .orElse(null));
     }
 
@@ -34,5 +42,13 @@ public class UserService {
         return getMapper().fromJpaEntity(
                 getRepository().save(
                         getMapper().toJpaEntity(user)));
+    }
+
+    public Page<User> findAllUser(String username, String email, String phone, String dateOfBirth, Pageable pageable) {
+        return findBySpec(UserSpecification.findByUsername(username)
+                .and(UserSpecification.findByEmail(email)
+                .and(UserSpecification.findByPhone(phone))
+                .and(UserSpecification.findByDateOfBirth(dateOfBirth))
+                ), pageable);
     }
 }

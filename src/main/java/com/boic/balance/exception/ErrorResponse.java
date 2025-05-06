@@ -1,3 +1,3 @@
-package com.boic.testTask.exception;
+package com.boic.balance.exception;
 
 public record ErrorResponse(String code, String message) {}

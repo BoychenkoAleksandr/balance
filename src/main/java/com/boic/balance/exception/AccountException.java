@@ -1,7 +1,7 @@
 package com.boic.balance.exception;
 
-public class InsufficientFundsException extends RuntimeException {
-    public InsufficientFundsException(String message) {
+public class AccountException extends RuntimeException {
+    public AccountException(String message) {
         super(message);
     }
 }

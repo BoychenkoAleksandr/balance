@@ -1,4 +1,4 @@
-INSERT INTO public.user (username, password, date_of_birth)
+INSERT INTO public.users (username, password, date_of_birth)
 VALUES
 ('admin', 'admin', '1990-01-15'),
-('user', 'user', '')
+('user', 'user', '1985-05-01')

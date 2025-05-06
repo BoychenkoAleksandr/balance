@@ -1,9 +1,9 @@
-package com.boic.testTask.auth;
+package com.boic.balance.auth;
 
 import lombok.Data;
 
 @Data
 public class AuthLogin {
-    private String username;
+    private String login;
     private String password;
 }

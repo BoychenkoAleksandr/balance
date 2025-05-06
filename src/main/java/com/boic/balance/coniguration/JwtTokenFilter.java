@@ -1,25 +1,25 @@
-package com.boic.testTask.configuration;
+package com.boic.balance.coniguration;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
+import java.util.Collections;
 
 @Component
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(
@@ -30,13 +30,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         String token = extractToken(request);
         if (token != null && jwtTokenUtil.validateToken(token)) {
             String username = jwtTokenUtil.extractUsername(token);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            CustomUserDetails customUserDetails = userDetailsService.loadUserByUsername(username);
 
-            if (jwtTokenUtil.validateToken(token, userDetails)) {
+            if (jwtTokenUtil.validateToken(token, customUserDetails)) {
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                        userDetails,
+                        customUserDetails,
                         null,
-                        userDetails.getAuthorities()
+                        Collections.emptyList()
                 );
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);

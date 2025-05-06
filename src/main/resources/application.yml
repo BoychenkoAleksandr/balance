@@ -1,2 +1,21 @@
-gg.jte.development-mode=true
-spring.application.name=balance
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/balance
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
+
+jwt:
+  secret: "your-256-bit-secret-key-here-1234567890"
+  expiration: 86400
+

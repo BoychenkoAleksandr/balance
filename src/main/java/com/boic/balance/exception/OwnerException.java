@@ -1,7 +1,7 @@
 package com.boic.balance.exception;
 
-public class AuthorException extends RuntimeException {
-    public AuthorException(String message) {
+public class OwnerException extends RuntimeException {
+    public OwnerException(String message) {
         super(message);
     }
 }

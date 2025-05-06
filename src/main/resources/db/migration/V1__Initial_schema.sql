@@ -1,40 +1,32 @@
 CREATE SEQUENCE IF NOT EXISTS public.users_seq START WITH 1;
-
 CREATE TABLE IF NOT EXISTS public.users (
     id                  BIGINT DEFAULT nextval('public.users_seq') PRIMARY KEY,
-    username            VARCHAR(40)     NOT NULL,
-    password            VARCHAR(80)     NOT NULL,
-    name                VARCHAR(20)     NOT NULL,
-    surname             VARCHAR(20)     NOT NULL,
-    parent_name         VARCHAR(20)     NOT NULL,
-    creation_date       TIMESTAMP       NOT NULL,
-    last_edit_date      TIMESTAMP       NOT NULL,
-    role                VARCHAR(20)     NOT NULL
+    username            VARCHAR(500)    NOT NULL,
+    password            VARCHAR(500)    NOT NULL,
+    date_of_birth       DATE            NOT NULL
     );
 
-CREATE SEQUENCE IF NOT EXISTS public.news_seq START WITH 1;
-CREATE TABLE IF NOT EXISTS public.news (
-    id                  BIGINT DEFAULT nextval('public.news_seq') PRIMARY KEY,
-    title               VARCHAR(150)    NOT NULL,
-    text                VARCHAR(2000)   NOT NULL,
-    creation_date       TIMESTAMP       NOT NULL,
-    last_edit_date      TIMESTAMP       NOT NULL,
-    inserted_by_id      BIGINT          NOT NULL,
-    updated_by_id       BIGINT          NOT NULL,
-    FOREIGN KEY (inserted_by_id) REFERENCES public.users (id),
-    FOREIGN KEY (updated_by_id) REFERENCES public.users (id)
+CREATE SEQUENCE IF NOT EXISTS public.account_seq START WITH 1;
+CREATE TABLE IF NOT EXISTS public.account (
+    id                  BIGINT DEFAULT nextval('public.account_seq') PRIMARY KEY,
+    user_id             BIGINT          NOT NULL    UNIQUE,
+    start_balance       DECIMAL         NOT NULL,
+    balance             DECIMAL         NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES public.users (id)
     );
 
-CREATE SEQUENCE IF NOT EXISTS public.comments_seq START WITH 1;
-CREATE TABLE IF NOT EXISTS public.comments (
-    id                  BIGINT DEFAULT nextval('public.comments_seq') PRIMARY KEY,
-    text                VARCHAR(300)    NOT NULL,
-    creation_date       TIMESTAMP       NOT NULL,
-    last_edit_date      TIMESTAMP       NOT NULL,
-    inserted_by_id      BIGINT          NOT NULL,
-    updated_by_id       BIGINT          NOT NULL,
-    news_id             BIGINT          NOT NULL,
-    FOREIGN KEY (inserted_by_id) REFERENCES public.users (id),
-    FOREIGN KEY (updated_by_id) REFERENCES public.users (id),
-    FOREIGN KEY (news_id) REFERENCES public.news (id)
+CREATE SEQUENCE IF NOT EXISTS public.email_seq START WITH 1;
+CREATE TABLE IF NOT EXISTS public.email (
+    id                  BIGINT DEFAULT nextval('public.email_seq') PRIMARY KEY,
+    user_id             BIGINT          NOT NULL,
+    email               VARCHAR(200)    NOT NULL    UNIQUE,
+    FOREIGN KEY (user_id) REFERENCES public.users (id)
+    );
+
+CREATE SEQUENCE IF NOT EXISTS public.phone_seq START WITH 1;
+CREATE TABLE IF NOT EXISTS public.phone (
+    id                  BIGINT DEFAULT nextval('public.phone_seq') PRIMARY KEY,
+    user_id             BIGINT          NOT NULL,
+    phone               VARCHAR(13)     NOT NULL    UNIQUE,
+    FOREIGN KEY (user_id) REFERENCES public.users (id)
     );
