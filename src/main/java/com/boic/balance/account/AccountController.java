@@ -1,6 +1,7 @@
 package com.boic.balance.account;
 
 import com.boic.balance.coniguration.CustomUserDetails;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class AccountController {
 
     @PostMapping("/transfer")
     public ResponseEntity<AccountDtoOut> transfer(
-            @RequestBody TransferDtoIn transferEntity,
+            @RequestBody @Valid TransferDtoIn transferEntity,
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Account account = accountService.transferMoney(customUserDetails.getId(), transferEntity.getToUserId(), transferEntity.getAmount());
         return ResponseEntity.ok(accountMapper.toOut(account));

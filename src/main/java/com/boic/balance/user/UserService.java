@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,20 +27,6 @@ public class UserService implements CrudService<User, UserJpa> {
 
     public JpaMapper<User, UserJpa> getMapper() {
         return userJpaMapper;
-    }
-
-
-    @Transactional
-    public User findById(Long userId) {
-        return userJpaMapper.fromJpaEntity(userRepository.findById(userId)
-                .orElse(null));
-    }
-
-    @Transactional
-    public User persist(User user) {
-        return getMapper().fromJpaEntity(
-                getRepository().save(
-                        getMapper().toJpaEntity(user)));
     }
 
     public Page<User> findAllUser(String username, String email, String phone, String dateOfBirth, Pageable pageable) {

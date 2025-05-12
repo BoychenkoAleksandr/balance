@@ -1,6 +1,7 @@
 package com.boic.balance.controller;
 
-import com.boic.balance.auth.AuthLogin;
+import com.boic.balance.auth.AuthLoginByEmail;
+import com.boic.balance.auth.AuthLoginByPhone;
 import com.boic.balance.auth.AuthService;
 import com.boic.balance.auth.AuthController;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,17 +20,17 @@ public class AuthControllerTest {
     private AuthService authService;
     @InjectMocks
     private AuthController authController;
-    private AuthLogin testLoginByEmail;
-    private AuthLogin testLoginByPhone;
+    private AuthLoginByEmail testLoginByEmail;
+    private AuthLoginByPhone testLoginByPhone;
 
     @BeforeEach
     void setUp() {
 
-        testLoginByEmail = new AuthLogin();
+        testLoginByEmail = new AuthLoginByEmail();
         testLoginByEmail.setLogin("test@example.com");
         testLoginByEmail.setPassword("password");
 
-        testLoginByPhone = new AuthLogin();
+        testLoginByPhone = new AuthLoginByPhone();
         testLoginByPhone.setLogin("11111111111");
         testLoginByPhone.setPassword("password");
 

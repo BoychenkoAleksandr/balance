@@ -33,6 +33,7 @@ public class PhoneControllerTest {
     private final Long testId = 1L;
     private PhoneDto phoneDto;
     private Phone phone;
+    private User user;
     private CustomUserDetails userDetails;
     @BeforeEach
     void setUp() {
@@ -42,7 +43,7 @@ public class PhoneControllerTest {
         phone = new Phone();
         phone.setId(1L);
         phone.setPhone("11111111113");
-        User user = new User();
+        user = new User();
         user.setId(10L);
         phone.setUser(user);
 
@@ -75,7 +76,7 @@ public class PhoneControllerTest {
     void createPhone_ShouldReturnCreatedPhone() {
         // Подготовка
         when(phoneMapper.fromIn(phoneDto)).thenReturn(phone);
-        when(phoneService.persistUniqueMail(phone)).thenReturn(phone);
+        when(phoneService.persistUniquePhone(phone)).thenReturn(phone);
         when(phoneMapper.toOut(phone)).thenReturn(phoneDto);
 
         // Действие
@@ -89,13 +90,17 @@ public class PhoneControllerTest {
 
         // Проверка вызовов
         verify(phoneMapper, times(1)).fromIn(phoneDto);
-        verify(phoneService, times(1)).persistUniqueMail(phone);
+        verify(phoneService, times(1)).persistUniquePhone(phone);
         verify(phoneMapper, times(1)).toOut(phone);
     }
 
     @Test
     void updatePhone_ShouldReturnUpdatedPhone() {
         // Подготовка
+        Phone newPhone = new Phone();
+        newPhone.setId(1L);
+        newPhone.setPhone("11111111114");
+        phone.setUser(user);
         when(phoneMapper.fromIn(phoneDto)).thenReturn(phone);
         when(phoneService.updatePhone(
                 eq(testId),

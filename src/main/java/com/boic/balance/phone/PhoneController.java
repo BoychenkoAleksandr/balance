@@ -1,6 +1,7 @@
 package com.boic.balance.phone;
 
 import com.boic.balance.coniguration.CustomUserDetails;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,10 +27,10 @@ public class PhoneController {
 
     @PostMapping
     public ResponseEntity<PhoneDto> createPhone(
-            @RequestBody PhoneDto request,
+            @RequestBody @Valid PhoneDto request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         log.debug("Creating new phone by user: {}", customUserDetails.getUsername());
-        Phone savedPhone = phoneService.persistUniqueMail(phoneMapper.fromIn(request));
+        Phone savedPhone = phoneService.persistUniquePhone(phoneMapper.fromIn(request));
         log.info("Phone created successfully with id: {}", savedPhone.getId());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(phoneMapper.toOut(savedPhone));
@@ -38,7 +39,7 @@ public class PhoneController {
     @PutMapping("/{id}")
     public ResponseEntity<PhoneDto> updatePhone(
             @PathVariable Long id,
-            @RequestBody PhoneDto request,
+            @RequestBody @Valid PhoneDto request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         log.debug("Updating phone with id: {} by user: {}", id, customUserDetails.getUsername());
         Phone savedPhone = phoneService.updatePhone(id, phoneMapper.fromIn(request),
@@ -48,11 +49,12 @@ public class PhoneController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletePhone(
+    public ResponseEntity<Void> deletePhone(
             @PathVariable Long id,
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         log.debug("Deleting phone with id: {} by user: {}", id, customUserDetails.getUsername());
         phoneService.delete(id, customUserDetails.getId());
         log.info("Phone with id {} deleted successfully", id);
+        return ResponseEntity.noContent().build();
     }
 }

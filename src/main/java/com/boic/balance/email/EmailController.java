@@ -1,6 +1,7 @@
 package com.boic.balance.email;
 
 import com.boic.balance.coniguration.CustomUserDetails;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class EmailController {
 
     @PostMapping
     public ResponseEntity<EmailDto> createEmail(
-            @RequestBody EmailDto request,
+            @RequestBody @Valid EmailDto request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         log.debug("Creating new email by user: {}", customUserDetails.getUsername());
         Email savedEmail = emailService.persistUniqueMail(emailMapper.fromIn(request));
@@ -38,7 +39,7 @@ public class EmailController {
     @PutMapping("/{id}")
     public ResponseEntity<EmailDto> updateEmail(
             @PathVariable Long id,
-            @RequestBody EmailDto request,
+            @RequestBody @Valid EmailDto request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         log.debug("Updating email with id: {} by user: {}", id, customUserDetails.getUsername());
         Email savedEmail = emailService.updateEmail(id, emailMapper.fromIn(request),
@@ -48,11 +49,12 @@ public class EmailController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEmail(
+    public ResponseEntity<Void> deleteEmail(
             @PathVariable Long id,
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         log.debug("Deleting email with id: {} by user: {}", id, customUserDetails.getUsername());
         emailService.delete(id, customUserDetails.getId());
         log.info("Email with id {} deleted successfully", id);
+        return ResponseEntity.noContent().build();
     }
 }

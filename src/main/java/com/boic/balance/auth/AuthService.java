@@ -27,8 +27,8 @@ public class AuthService {
     public String loginByEmail(String email, String password) {
         log.debug("Attempting to authenticate user with email: {}", email);
         try {
-            Long userId = emailService.findByEmailIgnoreCase(email).getUser().getId();
-            User user = userService.findById(userId);
+            Long userId = emailService.findByEmail(email).getUser().getId();
+            User user = userService.getById(userId);
             if (!user.getPassword().equals(password))
                 throw new RuntimeException();
             CustomUserDetails customUserDetails = userDetailsService.loadUserByUsername(user.getUsername());
@@ -45,7 +45,7 @@ public class AuthService {
         log.debug("Attempting to authenticate user with phone: {}", phone);
         try {
             Long userId = phoneService.findByPhone(phone).getUser().getId();
-            User user = userService.findById(userId);
+            User user = userService.getById(userId);
             if (!user.getPassword().equals(password))
                 throw new RuntimeException();
 
